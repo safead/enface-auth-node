@@ -135,7 +135,7 @@ new EnfaceAuth({
   // full callback URL (we use HTTPS mode as we provide “httpServer” variable above)
 
   async onCheckCurrentStatus(userId) {
-    // record with “userId” existence means that biometric signin is enabled
+    // record with “userId” exists - biometric signin is enabled
     const bioUser = await models.AuthBioLink.findByUserId(userId);
     return !!bioUser;
   },
@@ -147,9 +147,10 @@ new EnfaceAuth({
   },
 
   async onActivate(userId, bioId, userPublicKey) {
-    // checking the “userId” record existance
+    // check “userId” record existance
     const bioUser = await models.AuthBioLink.findByUserId(userId);
-    if (bioUser) { // delete record and return “false”. Biometric is now turned OFF
+    if (bioUser) {
+      // delete record and return “false”. Biometric is now turned OFF
       await bioUser.destroy({ userId });
       return false;
     }
@@ -187,6 +188,7 @@ new EnfaceAuth({
 
     // here is how we do it: generate and return JWT token
     return utils.createToken(user, process.env.SECRET, constants.SESSION_JWK_TIMEOUT);
-  },
+  }
+
 });
 ```
