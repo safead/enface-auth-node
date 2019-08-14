@@ -1,5 +1,7 @@
 # Enface authorization Node.js library
 
+![](https://lh3.googleusercontent.com/C6975GR-Hv9vpPYVvQFUQ2_ywxhfKHnUulJJjqX_9feNEXFnTNdTWqu_s4-tbeCopVc6caNfq7NlMxpzmiGt8GnM0h3n-LUzwTbAgWmReW8YeDthTOWlwKflMJHSxkg4L6t5TOYB860zwmwOq-r8tPBcWj3pkW56CA3Wijv1aZ9p6BAG8nks3Z16EdCTj-CRj7JRyiya5flD5N-tadQxA9PK1_e7gVlrpW57p0mxyEB8pEQ3sltTZ1MZGMBGVMM7DpuSiV-X7nGqN2MB0mxi8d93Ztnt3dGHvKhy5lRI0McBLS8chPSei0Nwjm0QgbpqiMpesGSGVuG6q_o5tcoe27-YCFl5iQFYGqfzo6oFbszv7GGBmH2vqoTadxPupGEiHX_pbJMbVlRkTl_8Bwak1mEnx4IgHrBhyOOyljwX0wATguhBaAEKCDrbTPH8oUXdQJtwB71uR8dVVFJtF9u6vlSAg_WHEzivQFgp8KPoWpuUUJgY9zuYkvSs97sBeEkIKulIHAsIp0RNjg7y3pPiT5Hw41R7ulGBb5WA3SSRkIzbBbVYduMojNgkUkLtwSJMhGn4YyF6ucnPPofqeCKGmRIoz7h3ZiGqyJGZb_cJXxxJ4Tq9g2sVHxqnuQTUP5fFRbeq2vGG22HoFkjhGgNIVchpRNFmYw=w108-h150-no)
+
 Enface offers biometric authorization feature for any websites (or apps) using [Enface application](https://apps.apple.com/us/app/enface/id1464761858 "Enface application") and neural networks face recognition engine. Our authentication process is based on strong cryptographic algorithms combined with biometric user's data.
 
 To enable our solution you should pass the following steps:
@@ -32,7 +34,7 @@ import { EnfaceAuth } from "enface-auth-node";
 ```
 CommonJS module require:
 ```js
-const { EnfaceAuth } = require("enface-auth-node ");
+const { EnfaceAuth } = require("enface-auth-node");
 ```
 
 ### Initialization:
@@ -122,6 +124,7 @@ To achieve maximum security level, the [Enface application](https://apps.apple.c
 This function will be called after Enface API server successfully processed the authorization request, providing “bioId” to find the linked “userId”. At this moment an authorization data (token, session id, cookies etc.) should be generated according your backend security logic. All necessary security checks are already done at this moment and [Enface Widget](https://github.com/safead/enface-auth-widget "Enface Widget") at the frontend is going to receive generated token.
 
 ###Here is how EnfaceAuth is integrated at our own Node.js server.
+
 ```js
 new EnfaceAuth({
 
