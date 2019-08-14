@@ -123,7 +123,7 @@ To achieve maximum security level, the [Enface application](https://apps.apple.c
 
 This function will be called after Enface API server successfully processed the authorization request, providing “bioId” to find the linked “userId”. At this moment an authorization data (token, session id, cookies etc.) should be generated according your backend security logic. All necessary security checks are already done at this moment and [Enface Widget](https://github.com/safead/enface-auth-widget "Enface Widget") at the frontend is going to receive generated token.
 
-###Here is how EnfaceAuth is integrated at our own Node.js server.
+### Here is how EnfaceAuth is integrated at our own Node.js server.
 
 ```js
 new EnfaceAuth({
