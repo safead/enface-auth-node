@@ -41,31 +41,31 @@ const { EnfaceAuth } = require("enface-auth-node");
 ```js
 new EnfaceAuth({
 
-	port: <number> || httpServer: <object>,
-	callbackUrl: <string>,
-	projectId: <string>,
-	secretCode: <string>,
-	debug: <boolean>, // debug logs
+  port: <number> || httpServer: <object>,
+  callbackUrl: <string>,
+  projectId: <string>,
+  secretCode: <string>,
+  debug: <boolean>, // debug logs
 
-	onCheckCurrentStatus(userId) {
-		// is biometric sign in for current user enabled or not?
-	},
+  onCheckCurrentStatus(userId) {
+    // is biometric sign in for current user enabled or not?
+  },
 
-	onUserValidate(userData) {
-		// validate logged in user by token, session id, cookie etc.
-	},
+  onUserValidate(userData) {
+    // validate logged in user by token, session id, cookie etc.
+  },
 
-	onActivate(userId, bioId, userPublicKey) {
-		// linking user with his biometric id
-	},
+  onActivate(userId, bioId, userPublicKey) {
+    // linking user with his biometric id
+  },
 
-	onUserPublicKey(userId) {
-		// get user application public key
-	},
+  onUserPublicKey(userId) {
+    // get user application public key
+  },
 
-	onUserTokenByBioId(bioId) {
-		// create athorization data and send it to the frontend
-	},
+  onUserTokenByBioId(bioId) {
+    // create athorization data and send it to the frontend
+  },
 
 });
  ```
@@ -134,59 +134,59 @@ new EnfaceAuth({
   callbackUrl: 'https://enface-api-server.herokuapp.com',
   // full callback URL (we use HTTPS mode as we provide “httpServer” variable above)
 
-	async onCheckCurrentStatus(userId) {
-		// record with “userId” existence means that biometric signin is enabled
-		const bioUser = await models.AuthBioLink.findByUserId(userId);
-		return !!bioUser;
-	},
+  async onCheckCurrentStatus(userId) {
+    // record with “userId” existence means that biometric signin is enabled
+    const bioUser = await models.AuthBioLink.findByUserId(userId);
+    return !!bioUser;
+  },
 
-	onUserValidate(userData) {
-		// frontend widget will send this JWT token to identify user
-		const token = jwt.verify(userData, process.env.JWT_SECRET);
-		return token.id;
-	},
+  onUserValidate(userData) {
+    // frontend widget will send this JWT token to identify user
+    const token = jwt.verify(userData, process.env.JWT_SECRET);
+    return token.id;
+  },
 
-	async onActivate(userId, bioId, userPublicKey) {
-		// checking the “userId” record existance
-		const bioUser = await models.AuthBioLink.findByUserId(userId);
-		if (bioUser) { // delete record and return “false”. Biometric is now turned OFF
-			await bioUser.destroy({ userId });
-			return false;
-		}
+  async onActivate(userId, bioId, userPublicKey) {
+    // checking the “userId” record existance
+    const bioUser = await models.AuthBioLink.findByUserId(userId);
+    if (bioUser) { // delete record and return “false”. Biometric is now turned OFF
+      await bioUser.destroy({ userId });
+      return false;
+    }
 
-		// add new record and return “true”. Biometric is now turned ON
-		await models.AuthBioLink.create({
-			userId,
-			bioId,
-			userPublicKey,
-		});
-		return true;
-	},
+    // add new record and return “true”. Biometric is now turned ON
+    await models.AuthBioLink.create({
+      userId,
+      bioId,
+      userPublicKey,
+    });
+    return true;
+  },
 
-	async onUserPublicKey(userId) {
-		// get user public key if record with “userId” exists
-		const bioUser = await models.AuthBioLink.findByUserId(userId);
-		return bioUser ? bioUser.userPublicKey : null;
-	},
+  async onUserPublicKey(userId) {
+    // get user public key if record with “userId” exists
+    const bioUser = await models.AuthBioLink.findByUserId(userId);
+    return bioUser ? bioUser.userPublicKey : null;
+  },
 
-	async onUserTokenByBioId(bioId) {
-		// look for a record with “bioId"
-		const bioUser = await models.AuthBioLink.findByBioId(bioId);
-		if (!bioUser) return false; // no records found
+  async onUserTokenByBioId(bioId) {
+    // look for a record with “bioId"
+    const bioUser = await models.AuthBioLink.findByBioId(bioId);
+    if (!bioUser) return false; // no records found
 
-		// look for the user record in main users table (we know “userId”)
-		const user = await models.User.findById(bioUser.userId);
-		if (!user || !user.isActive) return false;
+    // look for the user record in main users table (we know “userId”)
+    const user = await models.User.findById(bioUser.userId);
+    if (!user || !user.isActive) return false;
 
-		/*
-		* use your backend custom authorization logic here
-		* the main goal at this moment is to generate secutity token
-		* which will be sent to Enface Widget automatically
-		* and let the user continue authorized
-		*/
+    /*
+    * use your backend custom authorization logic
+    * the main goal at this moment is to generate secutity token
+    * which will be sent to Enface Widget automatically
+    * and let the user continue authorized
+    */
 
-		// here is how we do it: generate and return JWT token
-		return utils.createToken(user, process.env.SECRET, constants.SESSION_JWK_TIMEOUT);
-	},
+    // here is how we do it: generate and return JWT token
+    return utils.createToken(user, process.env.SECRET, constants.SESSION_JWK_TIMEOUT);
+  },
 });
 ```
